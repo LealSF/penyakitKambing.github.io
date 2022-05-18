@@ -1,4 +1,9 @@
 <?php
+    session_start();
+    if(!isset($_SESSION['admin_username']) && !isset($_SESSION['admin_password'])){
+      header('location:../login.php');
+    }
+    
     include '../../config/koneksi.php';
 
     if(isset($_POST['btn_simpan'])){
@@ -7,8 +12,9 @@
         $penjelasan = $_POST['penjelasan_penyakit'];
         $penanganan = $_POST['penanganan_penyakit'];
         //jika sudah terisi
-        if(!empty($kode_penyakit)&&!empty($nama_penyakit)&&!empty($penjelasan)&&!empty($penanganan)){
-            $input = mysqli_query($conn, "INSERT INTO penyakit_tbl (kode_penyakit,penyakit_nama,penyakit_penjelasan,penaykit_penanganan) VALUES ('$kode_penyakit','$nama_penyakit','$penjelasan','$penanganan')");
+        if(!empty($kode_penyakit) && !empty($nama_penyakit) && !empty($penjelasan) && !empty($penanganan)){
+            $input = mysqli_query($conn, "INSERT INTO penyakit_tbl (id_penyakit,penyakit_nama,penyakit_penjelasan,penaykit_penanganan) 
+            VALUES ('$kode_penyakit','$nama_penyakit','$penjelasan','$penanganan')");
             echo "
             <script type='text/javascript'>
                 swal({
@@ -17,6 +23,7 @@
                     icon: 'success',
                     button: 'Ok',
                 });
+                window.alert('Data tersimpan');
             </script>";
             header('location:../dataPenyakit.php');
         }
@@ -30,7 +37,9 @@
                 icon: 'error',
                 button: 'Ok',
             });
+            window.alert('Data tidak tersimpan');
             </script>";
+            echo "<script>console.log('Gagal Menyimpan data')</script>";
             header('location:../dataPenyakit.php');
         }
     }
@@ -71,7 +80,7 @@
         }
     }
     
-    elseif(isset($_GET['btn_delete'])){
+    elseif(isset($_POST['btn_delete'])){
         $kode_penyakit = $_GET['id'];
         echo "
         <script type='text/javascript'>

@@ -12,6 +12,6 @@
         <a class="nav-link text-white" href="dataAturan.php"><i class="fa-solid fa-flask m-lg-2"></i>Data Aturan <hr class="bg-secondaray"></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-white" href="#"><i class="fa-solid fa-arrow-right-from-bracket m-lg-2"></i>Sign Out<hr class="bg-secondaray"></a>
+        <a class="nav-link text-white" href="validasi_login/validasi.php?log=logout" name="btn_logout"><i class="fa-solid fa-arrow-right-from-bracket m-lg-2"></i>Sign Out<hr class="bg-secondaray"></a>
     </li>
   </ul>

@@ -1,3 +1,9 @@
+<?php  
+  session_start();
+  if(!isset($_SESSION['admin_username']) && !isset($_SESSION['admin_password'])){
+    header('location:../login.php');
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +32,7 @@
         <div class="col-md-10 p-5 pt-10">
             <?php 
                 if(isset($_GET['aksi'])){
-                    switch(isset($_GET['aksi'])){
+                    switch($_GET['aksi']){
                         case 'create' :
                             create($conn);
                             break;
@@ -76,7 +82,7 @@
         <tr>
             <td><?php echo $data['id_penyakit'] ?></td>
             <td><?php echo $data['penyakit_nama'] ?></td>
-            <td class="m-lg-5"><a href="dataPenyakit.php?aksi=update&id=<?php $data['id_penyakit']; ?>"><button type="button" class="btn btn-success">Update</button></a> || <a href="penyakit/aksi_penyakit.php?id=<?php $data['id_penyakit']; ?>"><button type="button" name="btn_delete" class="btn btn-danger">Hapus</button></a></td>
+            <td class="m-lg-5"><a href="dataPenyakit.php?aksi=update&id=<?= $data['id_penyakit'] ?>"><button type="button" class="btn btn-success">Update</button></a> || <a href="penyakit/aksi_penyakit.php?id=<?= $data['id_penyakit'] ?>"><button type="button" name="btn_delete" class="btn btn-danger">Hapus</button></a></td>
         </tr>
         <?php }} ?>
       </tbody>
@@ -86,8 +92,7 @@
     <!-- menampilkan tambah data -->
     <?php function create($conn){ ?>
     <h3><i class="fa-solid fa-skull-crossbones m-lg-2"></i>Tambah Penaykit<hr></h3>
-    <form name="text_form" method="POST" action="penyakit/aksi_penyakit.php" >
-        <div id="error"></div>
+    <form method="POST" action="penyakit/aksi_penyakit.php">
         <div class="col-12">
           <label for="inputAddress" class="form-label">Kode Penyakit</label>
           <input type="text" name="kode_penyakit" class="form-control" placeholder="1234 Main St">
@@ -97,13 +102,13 @@
           <input type="text" name="nama_penyakit" class="form-control" placeholder="Tyapani">
         </div>
         <div class="col-md-12 mt-3">
-          <label for="inputCity" class="form-label">Penjelasan Penyakit dan Penanganan</label>
-          <textarea type="text" name="penjelasan_penyakit height" class="form-control" id="editor"></textarea>
+          <label for="inputCity" class="form-label">Penjelasan Penyakit</label>
+          <textarea type="text" name="penjelasan_penyakit" class="form-control" id="editor"></textarea>
         </div>
-        <!-- <div class="col-md-12">
+        <div class="col-md-12">
             <label for="inputCity" class="form-label">Penanganan</label>
-            <textarea type="text" name="penanganan_penyakit" class="form-control" id="editor"></textarea>
-        </div> -->
+            <textarea type="text" name="penanganan_penyakit" class="form-control" id="editor1"></textarea>
+        </div>
         <div class="col mt-3">
           <buttom  class="btn btn-danger" onclick="goBack()">Cancel</buttom>
           <button type="submit" name="btn_simpan" class="btn btn-success">Save</button>
@@ -113,8 +118,9 @@
     
     <!-- menampilkan edit data -->
     <?php function update($conn){ 
-        $edit = mysqli_query($conn,"SELECT * FROM penyakit_tbl WHERE id_penyakit='$_GET[id]'");
-        $hasil = mysqli_fetch_array($edit);
+        $id = $_GET['id'];
+        $edit = mysqli_query($conn,"SELECT * FROM penyakit_tbl WHERE id_penyakit='$id'");
+        foreach($edit as $hasil):
     ?>
     <h3><i class="fa-solid fa-skull-crossbones m-lg-2"></i>Update Penaykit<hr></h3>
       <form name="text_form" method="POST" action="penyakit/aksi_penyakit.php" >
@@ -139,19 +145,15 @@
           <button type="submit" name="btn_update" class="btn btn-success">Save</button>
         </div>
       </form>
-    <?php } ?>
+    <?php endforeach; } ?>
 
-    <script src="../../css/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>
-    <script src="../../asset/sweetalert.min.js"></script>
-    <script defer scr="penyakit/aksi_penyakit.php"></script>
+    <script src="../css/bootstrap/js/bootstrap.min.js"></script>
     <script src="../asset/ckeditor/ckeditor.js"></script>
+    <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>
+    <script src="../asset/sweetalert.min.js"></script>
+    <script defer scr="penyakit/aksi_penyakit.php"></script>
     <script>
-      ClassicEditor
-        .create(document.querySelector('#editor'))
-        .catch(error => {
-          console.error(error);
-        })
+      // CKEDITOR.replace('editor');
       
         function goBack(){
           window.history.back();

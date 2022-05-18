@@ -1,16 +1,20 @@
 <?php 
+    session_start();
+    if(!isset($_SESSION['admin_username']) && !isset($_SESSION['admin_password'])){
+        header('location:../../login.php');
+      }
+    
     include '../../config/koneksi.php';
 
-    if(isset($_GET['btn_save'])){
-        $kode_aturan = $_GET['kode_aturan'];
-        $nama_penyakit = $_GET[''];
-        $gejala = $_GET[''];
-        $nilai_mb = $_GET['nilai_mb'];
-        $nilai_md = $_GET['nilai_md'];
+    if(isset($_POST['btn_save'])){
+        $kode_aturan = $_POST['kode_aturan'];
+        $nama_penyakit = $_POST['nama_penyakit'];
+        $gejala = $_POST['nama_gejala'];
+        $nilai_mb = $_POST['nilai_mb'];
+        $nilai_md = $_POST['nilai_md'];
         // Jika terisi
-        if(!empty($kode_aturan)&&!empty($nama_penyakit)&&!empty($gejala)&&!empty($nilai_mb)&&!empty($nilai_md)){
-            $input = mysqli_query($conn,"INSERT INTO aturan_tbl(id_aturan,id_penyakit,id_gejala,mb_aturan,md_aturan)
-            VALUES ('$kode_aturan','$nama_penyakit','$gejala','$nilai_mb','$nilai_md')");
+        if(!empty($kode_aturan) && !empty($nama_penyakit) && !empty($gejala) && !empty($nilai_mb) && !empty($nilai_md)){
+            $input = mysqli_query($conn, "INSERT INTO aturan_tbl SET id_aturan='$kode_aturan',id_penyakit='$nama_penyakit',id_gejala='$gejala',mb_aturan='$nilai_mb',md_aturan='$nilai_md'");
             echo "
             <script type='text/javascript'>
             swal({

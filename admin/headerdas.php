@@ -1,6 +1,10 @@
 <?php include("../config/koneksi.php"); ?>
 <?php  
-  session_start();
+  // session_start();
+  // if(!(isset($_SESSION['admin_username']) && isset($_SESSION['admin_password']))){
+  //   header('../index.php');
+  //   exit();
+  // }
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">

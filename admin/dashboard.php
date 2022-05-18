@@ -1,3 +1,9 @@
+<?php 
+  session_start();
+  if(!isset($_SESSION['admin_username']) && !isset($_SESSION['admin_password'])){
+    header('location:../login.php');
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +15,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="../css/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../asset/sweetalert.min.css">
 </head>
 <body class="container-fluid">
   <!-- header -->
@@ -28,7 +35,18 @@
                         <i class="fa-solid fa-skull-crossbones"></i>
                       </div>
                       <h5 class="card-title">Total Penyakit</h5>
-                      <div class="display-4">1.200</div>
+                      <div class="display-4">
+                        <?php  
+                          $query = mysqli_query($conn, "SELECT * FROM penyakit_tbl");
+                          $jumlah = mysqli_num_rows($query);
+                          if($jumlah >= 0){
+                            echo $jumlah;
+                          }
+                          else{
+                            echo "0";
+                          }
+                        ?>
+                      </div>
                     </div>
                 </div>
                 <div class="card bg-info m-lg-3" style="width: 18rem;">
@@ -37,7 +55,18 @@
                       <i class="fa-solid fa-temperature-full"></i>
                     </div>
                     <h5 class="card-title">Total Gejala</h5>
-                    <div class="display-4">2200</div>
+                    <div class="display-4">
+                      <?php  
+                      $query = mysqli_query($conn, "SELECT * FROM gejala_tbl");
+                      $jumlah = mysqli_num_rows($query);
+                      if($jumlah >= 0){
+                        echo $jumlah;
+                      }
+                      else{
+                        echo "0";
+                      }
+                      ?>
+                    </div>
                   </div>
               </div>
               <div class="card bg-info m-lg-3" style="width: 18rem;">
@@ -46,16 +75,27 @@
                     <i class="fa-solid fa-user"></i>
                   </div>
                   <h5 class="card-title">Total Pakar</h5>
-                  <div class="display-4">12</div>
+                  <div class="display-4">
+                  <?php  
+                      $query = mysqli_query($conn, "SELECT * FROM admin_tbl");
+                      $jumlah = mysqli_num_rows($query);
+                      if($jumlah >= 0){
+                        echo $jumlah;
+                      }
+                      else{
+                        echo "0";
+                      }
+                      ?>
+                  </div>
                 </div>
             </div>
             </div>
             <div class="row bg-dark text-white m-2">
               <div class="jumbotron ">
                 <h1 class="display-7">Selamat Data Di Sistem Pakar Diagnosa Pada Kambing</h1>
-                <p class="lead">Labay El Sulthan Fatta</p>
+                <p class="lead"><?php echo $_SESSION['admin_nama']; ?></p>
                 <hr class="my-4">
-                <p>Untuk kelola akun Labay El Sulthan Fatta</p>
+                <p>Untuk kelola akun <?php $name; ?></p>
                 <a class="btn btn-primary btn-lg mb-2 " href="#" role="button"><i class="fa-solid fa-gear icon-setting"></i>Pengaturan</a>
               </div>
             </div>
@@ -65,5 +105,9 @@
       <div class="row bg-primary flex-column">
         <p>halooooo</p>
       </div>
+
+      <script src="../asset/sweetalert.min.js"></script>
+
+      
 </body>
 </html>

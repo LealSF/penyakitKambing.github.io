@@ -1,9 +1,17 @@
 <?php
-include '../../config/koneksi.php';
-    if(isset($_GET['btn_create'])){
+    session_start();
+    if(!(isset($_SESSION['admin_username']) && isset($_SESSION['admin_password']))){
+        header('../index.php');
+        exit();
+    }
+
+    include '../../config/koneksi.php';
+    
+    if(isset($_POST['btn_create'])){
         $kode_gajala = $_POST['kode_gajala'];
         $nama_gejala = $_POST['nama_gajala'];
-        $query = mysqli_query($conn, "INSERT INTO gejala_tbl ('id_gejala','gejala_nama') VALUES ('$kode_gajala','$nama_gejala')");
+        $query = mysqli_query($conn, "INSERT INTO gejala_tbl ('id_gejala','gejala_nama') 
+        VALUES ('$kode_gajala','$nama_gejala')");
         if($query){
             echo "
             <script type='text/javascript'>
@@ -29,7 +37,7 @@ include '../../config/koneksi.php';
             header('location:../dataGejala.php?');
         }
     }
-    elseif(isset($_GET['btn_update'])){
+    elseif(isset($_POST ['btn_update'])){
         $kode_gajala = $_POST['kode_gajala'];
         $nama_gejala = $_POST['nama_gajala'];
         $update = mysqli_query($conn, "UPDATE gejala_tbl SET id_gejala='$kode_gajala',gejala_nama='$nama_gejala'");

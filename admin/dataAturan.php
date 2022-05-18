@@ -1,3 +1,9 @@
+<?php  
+  session_start();
+  if(!isset($_SESSION['admin_username']) && !isset($_SESSION['admin_password'])){
+    header('location:../login.php');
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,32 +92,33 @@
             <!-- Menampilkan tambah data aturan -->
             <?php function create($conn){ ?>
               <h3><i class="fa-solid fa-flask m-lg-2"></i>Tambah Aturan<hr></h3>
-              <form class="row g-3" action="aksi_aturan.php">
+              <form method="POST" class="row g-3" action="aturan/aksi_aturan.php">
                   <div class="col-12">
                     <label for="inputAddress" class="form-label">Kode Aturan</label>
-                    <input type="text" name="kode_aturan" class="form-control" id="inputAddress" placeholder="A001">
+                    <input type="text" name="kode_aturan" class="form-control" id="inputAddress" placeholder="Format Kode A001">
                   </div>
                   <div class="col-12">
                       <label for="inputAddress" class="form-label">Nama Penyakit</label>
-                      <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_penyakit" placeholder="Pilih Salah Satu">
                         <?php  
                           $hasil1 = mysqli_query($conn, "SELECT * FROM penyakit_tbl ORDER BY penyakit_nama");
                           while ($r1 = mysqli_fetch_array($hasil1)){
-                          echo "<option value='$r1[id_penyakit]'>'$r1[penyakit_nama]'</option>";
-                        ?>
-                        </select>
-                    </div>
-                    <div class="col-12">
-                      <label for="inputAddress" class="form-label">Nama Gejala</label>
-                      <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                        <?php 
-                          $hasil2 = mysqli_query($conn, "SELECT * FROM gejala_tbl ORDER BY gejala_nama");
-                          while ($r2 = mysqli_fetch_array($hasil2)){
-                            echo "<option value='$r2[id_gejala]'>'$r2[gejala_nama]'</option>";
+                          echo "<option value='$r1[id_penyakit]'>$r1[penyakit_nama]</option>";
                           }
                         ?>
                         </select>
-                    </div>
+                  </div>
+                  <div class="col-12">
+                      <label for="inputAddress" class="form-label">Nama Gejala</label>
+                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" nama="nama_gejala" placeholder="Pilih Salah Satu">
+                        <?php 
+                          $hasil2 = mysqli_query($conn, "SELECT * FROM gejala_tbl ORDER BY gejala_nama");
+                          while ($r2 = mysqli_fetch_array($hasil2)){
+                            echo "<option value='$r2[id_gejala]'>$r2[gejala_nama]</option>";
+                          }
+                        ?>
+                        </select>
+                  </div>
                   <div class="col-12">
                     <label for="inputAddress2" class="form-label">Nilai MB (Meansure Of Belief)</label>
                     <input type="text" name="nilai_mb" class="form-control" id="inputAddress2" placeholder="nilai dari 0 - 1">
@@ -132,24 +139,23 @@
                 $hasil = mysqli_fetch_array($update);
                 ?>
                 <h3><i class="fa-solid fa-flask m-lg-2"></i>Update Aturan<hr></h3>
-                <form class="row g-3" action="aksi_aturan.php">
+                <form class="row g-3" action="aturan/aksi_aturan.php">
                     <div class="col-12">
                       <label for="inputAddress" class="form-label">Kode Aturan</label>
                       <input type="text" name="kode_aturan" class="form-control" id="inputAddress" placeholder="<?php $hasil['id_aturan']; ?>" disabled>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Nama Penyakit</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" value="<?php $hasil['id_penyakit'] ?>">
                           <?php  
-                            $hasil1 = mysqli_query($conn, "SELECT * FROM penyakit_tbl ORDER BY penyakit_nama");
-                            while ($r1 = mysqli_fetch_array($hasil1)){
-                              if($hasil['id_penyakit']==$r1['id_penyakit']){
-                                $sel = "selected";
-                              } else{
-                                $sel = "";
+                            $hasil1 = mysqli_query($conn, "SELECT * FROM penyakit_tbl");
+                            foreach ($hasil1 as $key) :
+                              if($hasil['id_penyakit'] == $key['id_penyakit']){
+                                echo "<option value='$key[id_penyakit]' selected>$key[penyakit_nama]</option>";
+                              } else {
+                                echo "<option value='$key[id_penyakit]'>$key[penyakit_nama]</option>";
                               }
-                              echo "<option value='$r1[id_penyakit]' $sel>$r1[penyakit_nama]</option>";
-                            }
+                          endforeach;
                           ?>
                           </select>
                       </div>
@@ -157,15 +163,14 @@
                         <label for="inputAddress" class="form-label">Nama Gejala</label>
                         <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                           <?php 
-                            $hasil2 = mysqli_query($conn, "SELECT * FROM gejala_tbl ORDER BY gejala_nama");
-                            while ($r2 = mysqli_fetch_array($hasil2)){
-                              if($hasil['id_gejala']==$r2['id_gejala']){
-                                $sel = "selected";
+                            $hasil2 = mysqli_query($conn, "SELECT * FROM gejala_tbl");
+                            foreach ($hasil2 as $key):
+                              if($hasil['id_gejala']==$key['id_gejala']){
+                                echo "<option value='$key[id_gejala]'>$key[gejala_nama]</option>";
                               } else{
-                                $sel = "";
+                                echo "<option value='$key[id_gejala]'>$key[gejala_nama]</option>";
                               }
-                              echo "<option value='$r2[id_gejala]' $sel> $r2['gejala_nama']</option>";
-                            }
+                            endforeach;
                           ?>
                           </select>
                       </div>
@@ -187,7 +192,7 @@
     </div>
     <script src="../css/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>
-    <script src="../../asset/sweetalert.min.js"></script>
+    <script src="../asset/sweetalert.min.js"></script>
     <script defer scr="penyakit/aksi_penyakit.php"></script>
     <script src="../asset/ckeditor/ckeditor.js"></script>
     <script>

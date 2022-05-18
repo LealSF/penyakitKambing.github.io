@@ -1,3 +1,4 @@
+<?php include('config/koneksi.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,41 +23,34 @@
             </div>
             <h3><i class="fa-solid fa-chart-line m-lg-2"></i>Analisis Penyakit<hr></h3> 
             <form action="">
+                <?php  
+                $query = mysqli_query($conn, "SELECT * FROM gejala_tbl");
+                $hitung = mysqli_num_rows($query);
+                $num = 0;
+                if($hitung == 0){
+                    echo "<h1 class='display-6 text center'>Tidak ada data</h1>";
+                }
+                else {
+                    while($data = mysqli_fetch_array($query)){
+                    $num++;
+                ?>
                 <div class="row mb-3">
-                    <label class="col-sm-1 col-form-label">1</label>
-                    <label class="col-sm-9 col-form-label">Kulit muncul bintik-bintik merah yang terbentuk bisul sehingga mengalami kekakuan, penebalan, dan penskalaan</label>
+                    <label class="col-sm-1 col-form-label"><?= $num ?></label>
+                    <label class="col-sm-9 col-form-label"><?= $data['gejala_nama'] ?></label>
                     <div class="col-2">
                         <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option selected>Pilih</option>
+                            <option value="0">Tidak</option>
+                            <option value="0.4">Mungkin</option>
+                            <option value="0.6">Kemungkinan Besar</option>
+                            <option value="0.8">Hampir Pasti</option>
+                            <option value="1">Pasti</option>
                           </select>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label class="col-sm-1 col-form-label">2</label>
-                    <label class="col-sm-9 col-form-label">Kambing terlihat lesu, lemah, pucat</label>
-                    <div class="col-2">
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                          </select>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label class="col-sm-1 col-form-label">3</label>
-                    <label class="col-sm-9 col-form-label">Kotoran kambing berwarna hijau muda, mengkilat, atau berwarna kemerahan, atau kehitaman</label>
-                    <div class="col-2">
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                          </select>
-                    </div>
+                <?php }} ?>
+                <div class="col mt-4">
+                    <button class="btn btn-success" type="submit" name="btn_diagnosis">Create</button>
                 </div>
             </form>
         </div>
