@@ -27,7 +27,7 @@
           <!-- fungsi menampilkan tampilan -->
           <?php 
             if(isset($_GET['aksi'])){
-              switch(isset($_GET['aksi'])){
+              switch($_GET['aksi']){
                 case 'create':
                   create($conn);
                   break;

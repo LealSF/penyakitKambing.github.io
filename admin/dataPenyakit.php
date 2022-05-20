@@ -118,34 +118,35 @@
     
     <!-- menampilkan edit data -->
     <?php function update($conn){ 
+      if(isset($_GET['id'])) {
         $id = $_GET['id'];
         $edit = mysqli_query($conn,"SELECT * FROM penyakit_tbl WHERE id_penyakit='$id'");
-        foreach($edit as $hasil):
+        foreach($edit as $hasil) :
     ?>
     <h3><i class="fa-solid fa-skull-crossbones m-lg-2"></i>Update Penaykit<hr></h3>
-      <form name="text_form" method="POST" action="penyakit/aksi_penyakit.php" >
+      <form method="POST" action="penyakit/aksi_penyakit.php" >
         <div class="col-12">
           <label for="inputAddress" class="form-label">Kode Penyakit</label>
-          <input type="text" name="kode_penyakit" class="form-control" value="<?php $hasil['id_penyakit'] ?>" disabled>
+          <input type="text" name="kode_penyakit" class="form-control" value="<?= $hasil['id_penyakit'] ?>" disabled>
         </div>
         <div class="col-12">
           <label for="inputAddress2" class="form-label">Nama Penaykit</label>
-          <input type="text" name="nama_penyakit" class="form-control" value="<?php $hasil['penyakit_nama'] ?>">
+          <input type="text" name="nama_penyakit" class="form-control" value="<?= $hasil['penyakit_nama'] ?>">
         </div>
         <div class="col-md-12">
           <label for="inputCity" class="form-label">Penjelasan Penyakit</label>
-          <textarea type="text" name="penejelasan_Penyakit" class="form-control" id="inputCity" value="<?php $hasil['penyakit_penjelasan'] ?>"></textarea>
+          <textarea type="text" name="penjelasan_Penyakit" class="form-control" id="inputCity" value="<?= $hasil['penyakit_penjelasan'] ?>"></textarea>
         </div>
         <div class="col-md-12">
             <label for="inputCity" class="form-label">Penanganan</label>
-            <textarea type="text" name="penanganan_penyakit" class="form-control" id="inputCity" value="<?php $hasil['penaykit_penanganan'] ?>"></textarea>
+            <textarea type="text" name="penanganan_penyakit" class="form-control" id="inputCity" value="<?= $hasil['penaykit_penanganan'] ?>"></textarea>
         </div>
         <div class="col align-self-end">
           <button class="btn btn-danger" onclick="goBack()">Cancel</button>
           <button type="submit" name="btn_update" class="btn btn-success">Save</button>
         </div>
       </form>
-    <?php endforeach; } ?>
+    <?php endforeach; }} ?>
 
     <script src="../css/bootstrap/js/bootstrap.min.js"></script>
     <script src="../asset/ckeditor/ckeditor.js"></script>

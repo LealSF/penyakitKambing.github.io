@@ -2,7 +2,7 @@
     session_start();
     if(!isset($_SESSION['admin_username']) && !isset($_SESSION['admin_password'])){
         header('location:../../login.php');
-      }
+    }
     
     include '../../config/koneksi.php';
 
@@ -14,15 +14,16 @@
         $nilai_md = $_POST['nilai_md'];
         // Jika terisi
         if(!empty($kode_aturan) && !empty($nama_penyakit) && !empty($gejala) && !empty($nilai_mb) && !empty($nilai_md)){
-            $input = mysqli_query($conn, "INSERT INTO aturan_tbl SET id_aturan='$kode_aturan',id_penyakit='$nama_penyakit',id_gejala='$gejala',mb_aturan='$nilai_mb',md_aturan='$nilai_md'");
+            $insert = "INSERT INTO aturan_tbl VALUES ('$kode_aturan','$nama_penyakit','$gejala','$nilai_mb','$nilai_md')";
+            $query = mysqli_query($conn,$insert);
             echo "
             <script type='text/javascript'>
-            swal({
-                title: 'Created',
-                text: 'Data Berhasil Ditambahkan',
-                icon: 'success',
-                button: 'Ok',
-            });
+                swal({
+                    title: 'Created',
+                    text: 'Data Berhasil Ditambahkan',
+                    icon: 'success',
+                    button: 'Ok',
+                });
             </script>
             ";
             header('location:../dataAturan.php');
@@ -37,6 +38,7 @@
                 icon: 'error',
                 button: 'Ok',
             });
+            alert('Data tidak tersimpan');
             </script>
             ";
             header('location:../dataAturan.php');

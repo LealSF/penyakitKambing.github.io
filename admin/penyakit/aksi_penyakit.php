@@ -1,7 +1,7 @@
 <?php
     session_start();
     if(!isset($_SESSION['admin_username']) && !isset($_SESSION['admin_password'])){
-      header('location:../login.php');
+      header('location:../../login.php');
     }
     
     include '../../config/koneksi.php';
@@ -45,38 +45,18 @@
     }
 
     elseif(isset($_POST['btn_update'])){
-        $kode_penyakit = $_POST['kode_penyakit'];
-        $nama_penyakit = $_POST['nama_penyakit'];
-        $penjelasan = $_POST['penjelasan_penyakit'];
+        $id = $_POST['kode_penyakit'];
+        $nama = $_POST['nama_penyakit'];
+        $penjelasan = $_POST['penjelasan_Penyakit'];
         $penanganan = $_POST['penanganan_penyakit'];
-        //proses update
-        if(!empty($kode_penyakit)&&!empty($nama_penyakit)&&!empty($penjelasan)&&!empty($penanganan)){
-            $update = mysqli_query($conn, "UPDATE penyakit_tbl SET penyakit_nama='$nama_penyakit',penyakit_penjelasan='$penjelasan',penaykit_penanganan='$penanganan' WHERE kode_penyakit='$kode_penyakit'");
-            //apabila berhasil
-            if($update){
-                echo "
-                <script type='text/javascript'>
-                    swal({
-                        title: 'Updated',
-                        text: 'Data Berhasil Diupdate',
-                        icon: 'success',
-                        button: 'Ok',
-                    });
-                </script>";
-                header('location:../dataPenyakit.php');
-            }
-            // apabila gagal
-            else{
-                echo "
-                <script type='text/javascript'>
-                swal({
-                    title: 'Field',
-                    text: 'Data Tidak Berhasil Diupdate',
-                    icon: 'error',
-                    button: 'Ok',
-                });
-                </script>";
-            }
+        if(!empty($id) && !empty($nama) && !empty($penjelasan) && !empty($penanganan)){
+            $input = mysqli_query($conn, "UPDATE penyakit_tbl SET id_penyakit='$id', penyakit_nama='$nama', penyakit_penjelasan='$penjelasan', penaykit_penanganan='$penanganan' WHERE id_penyakit='$id'");
+            echo "<script>window.alert('Data telah tersimpan')</script>";
+            header('location:../dataPenyakit.php');
+        }
+        else{
+            echo "<script>window.alert('Data tidak telah tersimpan')</script>";
+            header('location:../dataPenyakit.php');
         }
     }
     
