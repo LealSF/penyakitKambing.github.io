@@ -39,6 +39,9 @@
                         case 'update':
                             update($conn);
                             break;
+                        case 'delete':
+                          delete($conn);
+                          break;
                         default:
                             show_data($conn);
                     }
@@ -49,7 +52,11 @@
             ?>
         </div>
     </div>
-
+    <!-- Footer -->
+    <div class="row bg-primary flex-column">
+        <p>halooooo</p>
+    </div>
+    <!-- Fungsi -->
     <!-- menampilkan data -->
 <?php
     function show_data($conn){
@@ -82,7 +89,8 @@
         <tr>
             <td><?php echo $data['id_penyakit'] ?></td>
             <td><?php echo $data['penyakit_nama'] ?></td>
-            <td class="m-lg-5"><a href="dataPenyakit.php?aksi=update&id=<?= $data['id_penyakit'] ?>"><button type="button" class="btn btn-success">Update</button></a> || <a href="penyakit/aksi_penyakit.php?id=<?= $data['id_penyakit'] ?>"><button type="button" name="btn_delete" class="btn btn-danger">Hapus</button></a></td>
+            <td class="m-lg-5"><a href="dataPenyakit.php?aksi=update&id=<?= $data['id_penyakit'] ?>"><button type="button" class="btn btn-success">Update</button></a> || 
+            <a href="dataPenyakit.php?aksi=delete&id=<?= $data['id_penyakit'] ?>"><button type="button" name="btn_delete" class="btn btn-danger">Hapus</button></a></td>
         </tr>
         <?php }} ?>
       </tbody>
@@ -91,8 +99,8 @@
 
     <!-- menampilkan tambah data -->
     <?php function create($conn){ ?>
-    <h3><i class="fa-solid fa-skull-crossbones m-lg-2"></i>Tambah Penaykit<hr></h3>
-    <form method="POST" action="penyakit/aksi_penyakit.php">
+    <h3><i class="fa-solid fa-skull-crossbones m-lg-2"></i>Tambah Penyakit<hr></h3>
+    <form method="POST" action="penyakit/aksi_penyakit.php" enctype="multipart/form-data">
         <div class="col-12">
           <label for="inputAddress" class="form-label">Kode Penyakit</label>
           <input type="text" name="kode_penyakit" class="form-control" placeholder="1234 Main St">
@@ -124,10 +132,10 @@
         foreach($edit as $hasil) :
     ?>
     <h3><i class="fa-solid fa-skull-crossbones m-lg-2"></i>Update Penaykit<hr></h3>
-      <form method="POST" action="penyakit/aksi_penyakit.php" >
+      <form method="POST" action="penyakit/aksi_penyakit.php" enctype="multipart/form-data">
         <div class="col-12">
           <label for="inputAddress" class="form-label">Kode Penyakit</label>
-          <input type="text" name="kode_penyakit" class="form-control" value="<?= $hasil['id_penyakit'] ?>" disabled>
+          <input type="text" name="kode_penyakit" class="form-control" value="<?= $hasil['id_penyakit'] ?>">
         </div>
         <div class="col-12">
           <label for="inputAddress2" class="form-label">Nama Penaykit</label>
@@ -135,26 +143,52 @@
         </div>
         <div class="col-md-12">
           <label for="inputCity" class="form-label">Penjelasan Penyakit</label>
-          <textarea type="text" name="penjelasan_Penyakit" class="form-control" id="inputCity" value="<?= $hasil['penyakit_penjelasan'] ?>"></textarea>
+          <textarea type="text" name="penjelasan_Penyakit" class="form-control" id="editor"><?= $hasil['penyakit_penjelasan'] ?></textarea>
         </div>
         <div class="col-md-12">
             <label for="inputCity" class="form-label">Penanganan</label>
-            <textarea type="text" name="penanganan_penyakit" class="form-control" id="inputCity" value="<?= $hasil['penaykit_penanganan'] ?>"></textarea>
+            <textarea type="text" name="penanganan_penyakit" class="form-control" id="editor1"><?= $hasil['penaykit_penanganan'] ?></textarea>
         </div>
         <div class="col align-self-end">
-          <button class="btn btn-danger" onclick="goBack()">Cancel</button>
+          <button class="btn btn-danger" onclick="history.back(-1)">Cancel</button>
           <button type="submit" name="btn_update" class="btn btn-success">Save</button>
         </div>
       </form>
     <?php endforeach; }} ?>
-
+    <!-- function delete -->
+    <?php 
+      function delete($conn){
+        if(isset($_GET['id']) && isset($_GET['aksi'])){
+          $id = $_GET['id'];
+          $delete = mysqli_query($conn, "DELETE FROM penyakit_tbl WHERE id_penyakit='$id'");
+          // jika terhapus
+          if($delete){
+            // jika aksi = delete
+            if($_GET['aksi'] == 'delete'){
+              header('location:dataPenyakit.php');
+              echo "<script>window.alert('Data telah terhapus')</script>";
+            }
+          }
+          // Jika tidak terhapus
+          else{
+            header('location:dataPenyakit.php');
+              echo "<script>window.alert('Data tidak terhapus')</script>";
+          }
+        }
+      }
+    ?>
+  
     <script src="../css/bootstrap/js/bootstrap.min.js"></script>
     <script src="../asset/ckeditor/ckeditor.js"></script>
+    <script src="../asset/ckfinder/ckfinder.js"></script>
     <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>
     <script src="../asset/sweetalert.min.js"></script>
     <script defer scr="penyakit/aksi_penyakit.php"></script>
     <script>
-      // CKEDITOR.replace('editor');
+      var editor1 = CKEDITOR.replace('editor');
+      var editor2 = CKEDITOR.replace('editor1');
+      CKFinder.setupCKEditor(editor1);
+      CKFinder.setupCKEditor(editor2);
       
         function goBack(){
           window.history.back();

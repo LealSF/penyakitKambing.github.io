@@ -19,7 +19,7 @@
         <!-- Menu utama -->
         <div class="col-md-10 p-5 pt-10">
             <div class="gambar text-center">
-                <img class="img-fluid rounded mb-3" src="asset/1676746.jpg" alt="">
+                <img class="img-fluid rounded mb-3" src="asset/banner.jpg" alt="">
             </div>
             <h3><i class="fa-solid fa-newspaper m-lg-2"></i>Penyakit Kambing<hr></h3> 
             <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
@@ -37,48 +37,17 @@
               ?>
                 <div class="col">
                   <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
+                    <img src="asset/gambar_kecil.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                      <h5 class="card-title"><?php $data['penyakit_nama']; ?></h5>
-                      <p class="card-text"><?php $potongan_kal = substr($data['penyakit_penjelasan'],0,20);
-                      echo "$potongan_kal...";
-                      ?></p>
-                      <a href="detailPenyakit.php?id=<?php $data['id_penyakit']; ?>" class="btn btn-primary">Detail</a>
+                      <h5 class="card-title"><?= $data['penyakit_nama']; ?></h5>
+                      <a href="detailPenyakit.php?id=<?= $data['id_penyakit']; ?>"><buttom class="btn btn-primary">Detail</buttom></a>
                     </div>
                   </div>
                 </div>
                 <?php }} ?>
-
-                <!-- <div class="col">
-                  <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
         </div>
-        <!-- footer -->
     </div>
+    <!-- footer -->
+    <?php include('footer.php'); ?>
 </body>
 </html>

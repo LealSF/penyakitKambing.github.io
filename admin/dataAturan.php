@@ -34,6 +34,9 @@
                 case 'update':
                   update($conn);
                   break;
+                case 'delete':
+                  delete($conn);
+                  break;
                 default :
                   show_data($conn);
               }
@@ -47,7 +50,6 @@
               function show_data($conn){
                 $query = mysqli_query($conn, "SELECT * FROM aturan_tbl");
                 $hitung = mysqli_num_rows($query);
-                if($hitung==0){
             ?>
             <h3><i class="fa-solid fa-flask m-lg-2"></i>Data Aturan<hr></h3>
             <a href='dataAturan.php?aksi=create'><button type="button" class="btn btn-primary mt-2 mb-3">Tambah Aturan</button></a>
@@ -63,27 +65,30 @@
                 </tr>
               </thead>
               <tbody>
-                <?php  
+                <?php 
+                if($hitung==0){ 
                   echo "<tr>
                     <td class='text-center' colspan='6'>Tidak ada data yang tersimpan</td>;
                   </tr>
                   ";
                 }
                 else {
+                  $no = 0;
                   while ($data = mysqli_fetch_array($query)){
-                  $no = 1;
-                  $sql1 = mysqli_query($conn, "SELECT * FROM penyakit_tbl WHERE id_penyakit = '$data[id_penyakit]'");
-                  $penyakit = mysqli_fetch_array($sql1);
-                  $sql2 = mysqli_query($conn, "SELECT * FROM gejala_tbl WHERE id_gejala = '$data[id_gejala]'");
-                  $gejala = mysqli_fetch_array($sql2);
+                    $no++;
+                    $sql1 = mysqli_query($conn, "SELECT * FROM penyakit_tbl WHERE id_penyakit = '$data[id_penyakit]'");
+                    $penyakit = mysqli_fetch_array($sql1);
+                    $sql2 = mysqli_query($conn, "SELECT * FROM gejala_tbl WHERE id_gejala = '$data[id_gejala]'");
+                    $gejala = mysqli_fetch_array($sql2);
                 ?>
                 <tr>
-                    <td><?php $no; ?></td>
-                    <td><?php $penyakit['penyakit_nama']; ?></td>
-                    <td><?php $gejala['gejala_nama']; ?></td>
-                    <td><?php $data['mb_aturan']; ?></td>
-                    <td><?php $data['md_aturan']; ?></td>
-                    <td class="m-lg-5"><a href='dataAturan.php?aksi=update&id=<?php $data['id_aturan']; ?>>'><button type="button" class="btn btn-success">Update</button></a> || <a href="aturan/aksi_aturan.php?id=<?php $data['id_aturan']; ?>"><button type="button" name="btn_delete" class="btn btn-danger">Delete</button></a></td>
+                    <td><?= $no; ?></td>
+                    <td><?= $penyakit['penyakit_nama']; ?></td>
+                    <td><?= $gejala['gejala_nama']; ?></td>
+                    <td><?= $data['mb_aturan']; ?></td>
+                    <td><?= $data['md_aturan']; ?></td>
+                    <td class="m-lg-5"><a href='dataAturan.php?aksi=update&id=<?= $data['id_aturan']; ?>'><button type="button" class="btn btn-success">Update</button></a> || 
+                    <a href="dataAturan.php?aksi=delete&id=<?= $data['id_aturan'] ?>"><button type="button" name="btn_delete" class="btn btn-danger">Delete</button></a></td>
                 </tr>
                 <?php }} ?>
               </tbody>
@@ -110,7 +115,7 @@
                   </div>
                   <div class="col-12">
                       <label for="inputAddress" class="form-label">Nama Gejala</label>
-                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" nama="nama_gejala" placeholder="Pilih Salah Satu">
+                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_gejala" placeholder="Pilih Salah Satu">
                         <?php 
                           $hasil2 = mysqli_query($conn, "SELECT * FROM gejala_tbl ORDER BY gejala_nama");
                           while ($r2 = mysqli_fetch_array($hasil2)){
@@ -139,14 +144,14 @@
                 $hasil = mysqli_fetch_array($update);
                 ?>
                 <h3><i class="fa-solid fa-flask m-lg-2"></i>Update Aturan<hr></h3>
-                <form class="row g-3" action="aturan/aksi_aturan.php">
+                <form method="POST" class="row g-3" action="aturan/aksi_aturan.php">
                     <div class="col-12">
                       <label for="inputAddress" class="form-label">Kode Aturan</label>
-                      <input type="text" name="kode_aturan" class="form-control" id="inputAddress" placeholder="<?php $hasil['id_aturan']; ?>" disabled>
+                      <input type="text" name="kode_aturan" class="form-control" id="inputAddress" value="<?= $hasil['id_aturan']; ?>">
                     </div>
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Nama Penyakit</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" value="<?php $hasil['id_penyakit'] ?>">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_penyakit" value="<?= $hasil['id_penyakit'] ?>">
                           <?php  
                             $hasil1 = mysqli_query($conn, "SELECT * FROM penyakit_tbl");
                             foreach ($hasil1 as $key) :
@@ -161,7 +166,7 @@
                       </div>
                       <div class="col-12">
                         <label for="inputAddress" class="form-label">Nama Gejala</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_gejala" value="<?= $hasil['id_gejala']?>">
                           <?php 
                             $hasil2 = mysqli_query($conn, "SELECT * FROM gejala_tbl");
                             foreach ($hasil2 as $key):
@@ -176,11 +181,11 @@
                       </div>
                     <div class="col-12">
                       <label for="inputAddress2" class="form-label">Nilai MB (Meansure Of Belief)</label>
-                      <input type="text" name="nilai_mb" class="form-control" id="inputAddress2" placeholder="<?php $hasil['mb_aturan']; ?>">
+                      <input type="text" name="nilai_mb" class="form-control" id="inputAddress2" value="<?= $hasil['mb_aturan']; ?>">
                     </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Nilai MD (Meansure Of Disbelief)</label>
-                        <input type="text" name="nilai_md" class="form-control" id="inputAddress2" placeholder="<?php $hasil['md_aturan']; ?>">
+                        <input type="text" name="nilai_md" class="form-control" id="inputAddress2" value="<?= $hasil['md_aturan']; ?>">
                       </div>
                     <div class="col align-self-end">
                       <button class="btn btn-danger" onclick="goBack()">Cancel</button>
@@ -188,7 +193,33 @@
                     </div>
                   </form>
                 <?php } ?>
+              <!-- function delete -->
+              <?php 
+                function delete($conn){
+                  if(isset($_GET['id']) && isset($_GET['aksi'])){
+                    $id = $_GET['id'];
+                    $delete = mysqli_query($conn, "DELETE FROM aturan_tbl WHERE id_aturan='$id'");
+                    // jika terhapus
+                    if($delete){
+                      // jika aksi = delete
+                      if($_GET['aksi'] == 'delete'){
+                        header('location:dataAturan.php');
+                        echo "<script>window.alert('Data telah terhapus')</script>";
+                      }
+                    }
+                    // Jika tidak terhapus
+                    else{
+                      header('location:dataAturan.php');
+                        echo "<script>window.alert('Data tidak terhapus')</script>";
+                    }
+                  }
+                }
+              ?>
         </div>
+    </div>
+    <!-- Footer -->
+    <div class="row bg-primary flex-column">
+        <p>halooooo</p>
     </div>
     <script src="../css/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>

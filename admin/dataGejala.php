@@ -35,6 +35,9 @@
                         case 'update':
                             update($conn);
                             break;
+                        case 'delete':
+                          delete($conn);
+                          break;
                         default:
                             show_data($conn);
                     }
@@ -45,6 +48,11 @@
             ?>
         </div>
     </div>
+    <!-- Footer -->
+    <div class="row bg-primary flex-column">
+        <p>halooooo</p>
+      </div>
+    <!-- Fungsi -->
     <!-- menampilkan data -->
     <?php function show_data($conn){ ?>
             <h3><i class="fa-solid fa-temperature-full m-lg-2"></i>Data Gejala<hr></h3>
@@ -73,7 +81,8 @@
                     <tr>
                         <td><?php echo $data['id_gejala']; ?></td>
                         <td><?php echo $data['gejala_nama']; ?></td>
-                        <td class="m-lg-5"><a href="dataGejala.php?aksi=update&id=<?= $data['id_gejala'] ?>"><button type="button" class="btn btn-success">Update</button></a> || <a href="gejala/aksi_penyakit.php?id<?php $data['id_gejala']; ?>"><button type="button" class="btn btn-danger" name="btn_delete">Delete</button></a></td>
+                        <td class="m-lg-5"><a href="dataGejala.php?aksi=update&id=<?= $data['id_gejala'] ?>"><button type="button" class="btn btn-success">Update</button></a> || 
+                        <a href="dataGejala.php?aksi=delete&id=<?=$data['id_gejala'] ?>"><button type="button" class="btn btn-danger" name="btn_delete">Delete</button></a></td>
                     </tr>
                     <?php }} ?>
                 </tbody>
@@ -109,7 +118,7 @@
             <form method="POST" class="row g-3" action="gejala/aksi_gejala.php">
                 <div class="col-12">
                   <label for="inputAddress" class="form-label">Kode Gejala</label>
-                  <input type="text" name="kode_gejala" class="form-control" id="inputAddress" value="<?= $data['id_gejala'] ?>" disabled>
+                  <input type="text" name="kode_gejala" class="form-control" id="inputAddress" value="<?=$data['id_gejala']?>">
                 </div>
                 <div class="col-12">
                   <label for="inputAddress2" class="form-label">Keterangan Gejala</label>
@@ -117,10 +126,32 @@
                 </div>
                 <div class="col align-self-end">
                   <button class="btn btn-danger" onclick="goBack()">Cancel</button>
-                  <button name="btn_update" type="submit" value="" class="btn btn-success">Save</button>
+                  <button name="btn_update" type="submit" value="" class="btn btn-success">Update</button>
                 </div>
               </form>
             <?php endforeach; }} ?>
+            <!-- function delete -->
+            <?php 
+              function delete($conn){
+                if(isset($_GET['id']) && isset($_GET['aksi'])){
+                  $id = $_GET['id'];
+                  $delete = mysqli_query($conn, "DELETE FROM gejala_tbl WHERE id_gejala='$id'");
+                  // jika terhapus
+                  if($delete){
+                    // jika aksi = delete
+                    if($_GET['aksi'] == 'delete'){
+                      header('location:dataGejala.php');
+                      echo "<script>window.alert('Data telah terhapus')</script>";
+                    }
+                  }
+                  // Jika tidak terhapus
+                  else{
+                    header('location:dataGejala.php');
+                      echo "<script>window.alert('Data tidak terhapus')</script>";
+                  }
+                }
+              }
+            ?>
     <script>
       function goBack(){
         window.history.back();

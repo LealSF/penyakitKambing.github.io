@@ -95,15 +95,13 @@
                 <h1 class="display-7">Selamat Data Di Sistem Pakar Diagnosa Pada Kambing</h1>
                 <p class="lead"><?php echo $_SESSION['admin_nama']; ?></p>
                 <hr class="my-4">
-                <p>Untuk kelola akun <?php $name; ?></p>
-                <a class="btn btn-primary btn-lg mb-2 " href="#" role="button"><i class="fa-solid fa-gear icon-setting"></i>Pengaturan</a>
               </div>
             </div>
           </div>
       </div>
       <!-- Footer -->
       <div class="row bg-primary flex-column">
-        <p>halooooo</p>
+        <p class="text-center">halooooo</p>
       </div>
 
       <script src="../asset/sweetalert.min.js"></script>

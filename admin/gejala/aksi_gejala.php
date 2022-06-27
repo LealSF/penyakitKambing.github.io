@@ -41,7 +41,7 @@
         $gejala_nama = $_POST['nama_gejala'];
         // Jika terisi
         if(!empty($kode_gajala) && !empty($gejala_nama)){
-            $update = mysqli_query($conn, "UPDATE gejala_tbl SET gejala_nama='$nama_gejala' WHERE id_gejala='$kode_gajala'");
+            $update = mysqli_query($conn, "UPDATE gejala_tbl SET gejala_nama='$gejala_nama' WHERE id_gejala='$kode_gajala'")or (mysqli_error());
             header('location: ../dataGejala.php');
             echo "<script>window.alert('Data berhasil diperbarui')</script>";
         }
@@ -49,30 +49,5 @@
             header('location: ../dataGejala.php');
             echo "<script>window.alert('Data tidak berhasil diperbarui')</script>";
         }
-    }
-
-    elseif(isset($_GET['btn_delete'])){
-        $kode_gajala = $_GET['id'];
-        echo "
-        <script type='text/javascript'>
-        swal({
-            title: 'Are you sure?',
-            text: 'Once deleted, you will not be able to recover this imaginary file!',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {",
-                $delete = mysqli_query($conn, "DELETE FROM gejala_tbl WHERE kode_gejala='$kode_penyakit'");
-              "swal('Poof! Your imaginary file has been deleted!', {
-                icon: 'success';
-              });
-            } else {
-              swal('Data Tidak Berhasil di Hapus');
-            }
-          });
-          </script>";
-          header('Location: ../dataGejala.php?');
     }
 ?>
