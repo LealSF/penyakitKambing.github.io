@@ -16,6 +16,7 @@
 <body class="container-fluid">
     <!-- header -->
     <?php include("header.php") ?>
+    <div class="info-data" data-infodata="<?php if(isset($_SESSION['info'])){ echo $_SESSION['info'];} ?>"></div>
     <div class="row no-gutters mt-5">
         <!-- sidebar -->
         <?php include("sidebar.php") ?>
@@ -58,7 +59,7 @@
                             </div>
                             <div class="col mx-3">
                                 <a href ="login.php?aksi=create"><buttom class="btn btn-danger">Create</button></a>
-                                <button type="submit" name="btn_login" class="btn btn-success">Login</button>
+                                <button type="submit" name="btn_login" id="btn_login" class="btn btn-success">Login</button>
                             </div>
                         </form>
                     </div>
@@ -101,8 +102,10 @@
             </div>
         </div>
     </div>
-
-    <script src="admin/validasi_login/validasi.js"></script>
+    <!-- footer -->
+    <?php include ('footer.php'); ?>
+    
+    <script src="asset/sweetalert2.all.min.js"></script>
     <script>
       function goBack(){
           window.history.back();

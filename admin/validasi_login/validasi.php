@@ -14,7 +14,7 @@
             $_SESSION['admin_username'] = $rows['admin_username'];
             $_SESSION['admin_password'] = $rows['admin_password	'];
             $_SESSION['admin_nama'] = $rows['admin_nama'];
-            $_SESSION['success'] = "Selamat Datang $rows[admin_nama]";
+            $_SESSION['success'] = "Berhasil";
             echo "<script>
             Swal.fire({
                 icon: 'success',

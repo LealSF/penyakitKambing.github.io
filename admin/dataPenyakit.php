@@ -11,9 +11,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Penyakit</title>
+    <!-- css for boostrap -->
     <link rel="stylesheet" href="../css/bootstrap/css/bootstrap.min.css">
+    <!-- css -->
     <link rel="stylesheet" href="../css/style.css">
+
+    <!-- js bosstrap -->
     <script src="../css/bootstrap/js/bootstrap.min.js"></script>
+    <!-- js fontawasome  -->
     <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>
     <style>
       .height{
@@ -54,8 +59,10 @@
     </div>
     <!-- Footer -->
     <div class="row bg-primary flex-column">
-        <p>halooooo</p>
-    </div>
+        <div class="py-3 text-center">
+          <p>&copy; Labay EL Sulthan Fatta</p>
+          </div>
+      </div>
     <!-- Fungsi -->
     <!-- menampilkan data -->
 <?php
@@ -103,19 +110,19 @@
     <form method="POST" action="penyakit/aksi_penyakit.php" enctype="multipart/form-data">
         <div class="col-12">
           <label for="inputAddress" class="form-label">Kode Penyakit</label>
-          <input type="text" name="kode_penyakit" class="form-control" placeholder="1234 Main St">
+          <input type="text" name="kode_penyakit" class="form-control" placeholder="1234 Main St" required>
         </div>
         <div class="col-12">
           <label for="inputAddress2" class="form-label">Nama Penaykit</label>
-          <input type="text" name="nama_penyakit" class="form-control" placeholder="Tyapani">
+          <input type="text" name="nama_penyakit" class="form-control" placeholder="Tyapani" required>
         </div>
         <div class="col-md-12 mt-3">
           <label for="inputCity" class="form-label">Penjelasan Penyakit</label>
-          <textarea type="text" name="penjelasan_penyakit" class="form-control" id="editor"></textarea>
+          <textarea type="text" name="penjelasan_penyakit" class="form-control" id="editor" required></textarea>
         </div>
         <div class="col-md-12">
             <label for="inputCity" class="form-label">Penanganan</label>
-            <textarea type="text" name="penanganan_penyakit" class="form-control" id="editor1"></textarea>
+            <textarea type="text" name="penanganan_penyakit" class="form-control" id="editor1" required></textarea>
         </div>
         <div class="col mt-3">
           <buttom  class="btn btn-danger" onclick="goBack()">Cancel</buttom>
@@ -135,19 +142,19 @@
       <form method="POST" action="penyakit/aksi_penyakit.php" enctype="multipart/form-data">
         <div class="col-12">
           <label for="inputAddress" class="form-label">Kode Penyakit</label>
-          <input type="text" name="kode_penyakit" class="form-control" value="<?= $hasil['id_penyakit'] ?>">
+          <input type="text" name="kode_penyakit" class="form-control" value="<?= $hasil['id_penyakit'] ?>" required>
         </div>
         <div class="col-12">
           <label for="inputAddress2" class="form-label">Nama Penaykit</label>
-          <input type="text" name="nama_penyakit" class="form-control" value="<?= $hasil['penyakit_nama'] ?>">
+          <input type="text" name="nama_penyakit" class="form-control" value="<?= $hasil['penyakit_nama'] ?>" required>
         </div>
         <div class="col-md-12">
           <label for="inputCity" class="form-label">Penjelasan Penyakit</label>
-          <textarea type="text" name="penjelasan_Penyakit" class="form-control" id="editor"><?= $hasil['penyakit_penjelasan'] ?></textarea>
+          <textarea type="text" name="penjelasan_Penyakit" class="form-control" id="editor" required><?= $hasil['penyakit_penjelasan'] ?></textarea>
         </div>
         <div class="col-md-12">
             <label for="inputCity" class="form-label">Penanganan</label>
-            <textarea type="text" name="penanganan_penyakit" class="form-control" id="editor1"><?= $hasil['penaykit_penanganan'] ?></textarea>
+            <textarea type="text" name="penanganan_penyakit" class="form-control" id="editor1" required><?= $hasil['penaykit_penanganan'] ?></textarea>
         </div>
         <div class="col align-self-end">
           <button class="btn btn-danger" onclick="history.back(-1)">Cancel</button>
@@ -182,7 +189,6 @@
     <script src="../asset/ckeditor/ckeditor.js"></script>
     <script src="../asset/ckfinder/ckfinder.js"></script>
     <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>
-    <script src="../asset/sweetalert.min.js"></script>
     <script defer scr="penyakit/aksi_penyakit.php"></script>
     <script>
       var editor1 = CKEDITOR.replace('editor');
@@ -190,9 +196,9 @@
       CKFinder.setupCKEditor(editor1);
       CKFinder.setupCKEditor(editor2);
       
-        function goBack(){
-          window.history.back();
-        }
+      function goBack(){
+        window.history.back();
+      }
     </script>
 </body>
 </html>

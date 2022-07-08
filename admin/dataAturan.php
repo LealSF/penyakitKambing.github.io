@@ -100,11 +100,11 @@
               <form method="POST" class="row g-3" action="aturan/aksi_aturan.php">
                   <div class="col-12">
                     <label for="inputAddress" class="form-label">Kode Aturan</label>
-                    <input type="text" name="kode_aturan" class="form-control" id="inputAddress" placeholder="Format Kode A001">
+                    <input type="text" name="kode_aturan" class="form-control" id="inputAddress" placeholder="Format Kode A001" required>
                   </div>
                   <div class="col-12">
                       <label for="inputAddress" class="form-label">Nama Penyakit</label>
-                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_penyakit" placeholder="Pilih Salah Satu">
+                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_penyakit" placeholder="Pilih Salah Satu" required>
                         <?php  
                           $hasil1 = mysqli_query($conn, "SELECT * FROM penyakit_tbl ORDER BY penyakit_nama");
                           while ($r1 = mysqli_fetch_array($hasil1)){
@@ -115,7 +115,7 @@
                   </div>
                   <div class="col-12">
                       <label for="inputAddress" class="form-label">Nama Gejala</label>
-                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_gejala" placeholder="Pilih Salah Satu">
+                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_gejala" placeholder="Pilih Salah Satu" required>
                         <?php 
                           $hasil2 = mysqli_query($conn, "SELECT * FROM gejala_tbl ORDER BY gejala_nama");
                           while ($r2 = mysqli_fetch_array($hasil2)){
@@ -126,11 +126,11 @@
                   </div>
                   <div class="col-12">
                     <label for="inputAddress2" class="form-label">Nilai MB (Meansure Of Belief)</label>
-                    <input type="text" name="nilai_mb" class="form-control" id="inputAddress2" placeholder="nilai dari 0 - 1">
+                    <input type="text" name="nilai_mb" class="form-control" id="inputAddress2" placeholder="nilai dari 0 - 1" required>
                   </div>
                   <div class="col-12">
                       <label for="inputAddress2" class="form-label">Nilai MD (Meansure Of Disbelief)</label>
-                      <input type="text" name="nilai_md" class="form-control" id="inputAddress2" placeholder="nilai dari 0 - 1">
+                      <input type="text" name="nilai_md" class="form-control" id="inputAddress2" placeholder="nilai dari 0 - 1" required>
                     </div>
                   <div class="col align-self-end">
                     <button class="btn btn-danger" onclick="goBack()">Cancel</button>
@@ -147,11 +147,11 @@
                 <form method="POST" class="row g-3" action="aturan/aksi_aturan.php">
                     <div class="col-12">
                       <label for="inputAddress" class="form-label">Kode Aturan</label>
-                      <input type="text" name="kode_aturan" class="form-control" id="inputAddress" value="<?= $hasil['id_aturan']; ?>">
+                      <input type="text" name="kode_aturan" class="form-control" id="inputAddress" value="<?= $hasil['id_aturan']; ?>" required>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Nama Penyakit</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_penyakit" value="<?= $hasil['id_penyakit'] ?>">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_penyakit" value="<?= $hasil['id_penyakit'] ?>" required>
                           <?php  
                             $hasil1 = mysqli_query($conn, "SELECT * FROM penyakit_tbl");
                             foreach ($hasil1 as $key) :
@@ -166,7 +166,7 @@
                       </div>
                       <div class="col-12">
                         <label for="inputAddress" class="form-label">Nama Gejala</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_gejala" value="<?= $hasil['id_gejala']?>">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="nama_gejala" value="<?= $hasil['id_gejala']?>" required>
                           <?php 
                             $hasil2 = mysqli_query($conn, "SELECT * FROM gejala_tbl");
                             foreach ($hasil2 as $key):
@@ -181,11 +181,11 @@
                       </div>
                     <div class="col-12">
                       <label for="inputAddress2" class="form-label">Nilai MB (Meansure Of Belief)</label>
-                      <input type="text" name="nilai_mb" class="form-control" id="inputAddress2" value="<?= $hasil['mb_aturan']; ?>">
+                      <input type="text" name="nilai_mb" class="form-control" id="inputAddress2" value="<?= $hasil['mb_aturan']; ?>" required>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Nilai MD (Meansure Of Disbelief)</label>
-                        <input type="text" name="nilai_md" class="form-control" id="inputAddress2" value="<?= $hasil['md_aturan']; ?>">
+                        <input type="text" name="nilai_md" class="form-control" id="inputAddress2" value="<?= $hasil['md_aturan']; ?>" required>
                       </div>
                     <div class="col align-self-end">
                       <button class="btn btn-danger" onclick="goBack()">Cancel</button>
@@ -219,8 +219,11 @@
     </div>
     <!-- Footer -->
     <div class="row bg-primary flex-column">
-        <p>halooooo</p>
-    </div>
+        <div class="py-3 text-center">
+          <p>&copy; Labay EL Sulthan Fatta</p>
+          </div>
+      </div>
+    
     <script src="../css/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/de6a8fd242.js" crossorigin="anonymous"></script>
     <script src="../asset/sweetalert.min.js"></script>

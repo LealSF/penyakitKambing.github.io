@@ -45,9 +45,37 @@ include ('config/koneksi.php'); ?>
         </div>
         <h3><i class="fa-solid fa-chart-line m-lg-2"></i>Analisis Penyakit<hr></h3>
         <div class="alert alert-warning" role="alert">
-            Pilihlah pernyataan sesuai dengan kondisi kambing. Pilihlah gejala lebih dari 1.    
+            Pilihlah pernyataan sesuai dengan kondisi kambing. Pilihlah gejala lebih dari 1. Isilah sesuai dengan keadaan keadaan kambing. 
+            Apabila gejala tidak muncul pada kambing, harap tidak diisi.  
         </div>
         <form method="POST" action="diagnosis.php?aksi=hasil">
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Masukan Nama</label>
+                <div class="col-sm-6">
+                    <input type="text" name="nama_peternak" class="form-control" id="staticEmail" placeholder="Masukan Nama Saudara....">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6 col-sm-3">
+                    <label class="col-sm-9 col-form-label">Pilih Provinsi</label>
+                    <select name="nama_province" class="form-select form-select-sm" aria-label=".form-select-sm example" required>
+                        <option selected>--- Pilih Provinsi ---</option>
+                        <!-- <?php  
+                            $provinsi = mysqli_query($conn,"SELECT * FROM provinces ORDER BY name ASC");
+                            while ($prov = mysqli_fetch_array($provinsi)){
+                                echo "<option value='".$prov["id"]."'>".$prov["name"]."</option>";
+                            }
+                        ?> -->
+                    </select>
+                </div>
+                <div class="col-6 col-sm-3">
+                    <label class="col-sm-9 col-form-label">Pilih Kabupaten</label>
+                    <select name="nama_districs" class="form-select form-select-sm" aria-label=".form-select-sm example" required>
+                        <option selected>--- Pilih Kabupaten ---</option>
+                    </select>
+                </div>
+            </div>
+            <!-- menampilkan Pertanyaan -->
             <?php  
             $query = mysqli_query($conn, "SELECT * FROM gejala_tbl");
             $hitung = mysqli_num_rows($query);
@@ -64,14 +92,14 @@ include ('config/koneksi.php'); ?>
                 <label class="col-sm-9 col-form-label">Apakah <?= $data['gejala_nama'] ?></label>
                 <div class="col-2">
                     <select class="form-select form-select-sm" name="kondisi[]" aria-label=".form-select-sm example">
-                        <option value="0" selected>Pilih</option>
-                        <?php if ($data['id_gejala'] == 'G021') { ?>
+                        <option value="0" selected>Tidak</option>
+                        <?php if ($data['id_gejala'] == 'G021' || $data['id_gejala'] == 'G006') { ?>
                             <option value="1.0<?= '_'.$data['id_gejala'] ?>">Pasti</option>
                         <?php } else{ ?>
-                            <option value="0.4<?= '_'.$data['id_gejala'] ?>">Mungkin</option>
-                            <option value="0.6<?= '_'.$data['id_gejala'] ?>">Kemungkinan Besar</option>
-                            <option value="0.8<?= '_'.$data['id_gejala'] ?>">Hampir Pasti</option>
-                            <option value="1.0<?= '_'.$data['id_gejala'] ?>">Pasti</option>
+                            <option value="0.25<?= '_'.$data['id_gejala'] ?>">Mungkin</option>
+                            <option value="0.5<?= '_'.$data['id_gejala'] ?>">Kadang - Kadang</option>
+                            <option value="0.75<?= '_'.$data['id_gejala'] ?>">Hampir Sering</option>
+                            <option value="1.0<?= '_'.$data['id_gejala'] ?>">Ya</option>
                         <?php } ?>
                         </select>
                 </div>
@@ -86,8 +114,13 @@ include ('config/koneksi.php'); ?>
     <?php 
     function hasil($conn){  
         if(isset($_POST['btn_diagnosis'])){
-
+            // mengambil nilai dari kondisi
+            $nama_peternak = $_POST['nama_peternak'];
+            $tanggal = date('Y-m-d H:i:s');
             $data_gejala = $_POST['kondisi'];
+            $provinsi = $_POST['nama_province'];
+            $distrik = $_POST['nama_districs'];
+
             $cf_lama = 0;
             $cf_baru = 0;
             foreach ($data_gejala as $key => $gejala){
@@ -104,6 +137,7 @@ include ('config/koneksi.php'); ?>
                 echo "<script>window.alert('Pilih gejala lebih dari 1')</script>";
                 header('location:diagnosis.php');
             }
+            // memberikan id_penyakit ke dalam array
             else{
                 foreach($gejala_selected as $gejala_select){
                     $id = $gejala_select['id'];
@@ -115,8 +149,9 @@ include ('config/koneksi.php'); ?>
                     }
                 }
                 // echo "<br />";
-                print_r($hasil);
+                // print_r($hasil);
                 
+                // perhitungan CFcombine
                 foreach ($hasil as $kunci2 => $kunci3){
                     $jumlah = count($kunci3);
                     $cf_lama = $kunci3[0]['cfuser'] * ($kunci3[0]['mb_aturan'] - $kunci3[0]['md_aturan']);
@@ -130,13 +165,29 @@ include ('config/koneksi.php'); ?>
                     $nilai_cf[] = array('nilai_cf'=>$hasil, 'id_penyakit'=>$id_penyakit);
                 }
                 rsort($nilai_cf);
-                print_r($nilai_cf);
+                // print_r($nilai_cf);
+
+                $arrGejala = serialize($gejala_selected);
+                $arrPenyakit = serialize($nilai_cf);
 
                 $id_penyakit = $nilai_cf[0]['id_penyakit'];
                 $cf_penyakit = $nilai_cf[0]['nilai_cf'];
+                
+                // if(!empty($nama_peternak) && !empty($data_gejala) && !empty($provinsi) && !empty($distrik)){
+                //     $input_log = "INSERT INTO log_hasil (nama_peternak,tanggal,penyakit,gejala,provinsi,kabupaten,hasil_id,nilai
+                //     VALUES ('$nama_peternak','$tanggal','$arrPenyakit','$arrGejala','$provinsi','$distrik','$id_penyakit','$cf_penyakit'))";
+                //     $query = mysqli_query($conn,$input_log);
+                //     echo "<script>console.log('Data sudah tersimpan di tabel log_hasil')</script>";
+                //     header('location:diagnosis.php');
+                // }
+                // else{
+                //     echo "<script>console.log('Data tidak tersimpan di tabel log_hasil')</script>";
+                //     header('location:diagnosis.php');
+                // }
+
                 $sql_penyakit = mysqli_query($conn, "SELECT * FROM penyakit_tbl WHERE id_penyakit='$id_penyakit'");
                 $penyakit = mysqli_fetch_array($sql_penyakit);
-            // $sql_gejala = mysqli_query($conn,"SELECT gejala_tbl.gejala_nama, penyakit_tbl.penyakit_nama FROM penyakit_tbl INNER JOIN ");
+        
         } ?>
         <div class="card">
             <div class="card-header">
@@ -183,16 +234,44 @@ include ('config/koneksi.php'); ?>
                       <?php  
                         for($i=1; $i<count($nilai_cf); $i++){
                             $id_penyakit = $nilai_cf[$i]['id_penyakit'];
+                            $nilai = $nilai_cf[$i]['nilai_cf'];
                             $sql_penyakit = mysqli_query($conn, "SELECT * FROM penyakit_tbl WHERE id_penyakit='$id_penyakit'");
                             $penyakit = mysqli_fetch_array($sql_penyakit);
                       ?>
-                      <li class="mb-2"><?= $penyakit['penyakit_nama']. " ($cf_penyakit %)"  ?></li><?php } ?>
+                      <li class="mb-2"><?= $penyakit['penyakit_nama']. " ($nilai %)"  ?></li><?php } ?>
                   </ul>
                 </div>
             </div>
             <a href="diagnosis.php"><button type="button" class="btn btn-link mt-3">Kembali diagnosa</button></a>
     <?php }}?>
     <!-- footer -->
-    <?php include('footer.php'); ?>  
+    <?php include('footer.php'); ?>
+    <script src="css/jquery.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                type:'post',
+                url:'config/dataProvince.php',
+                success:function(hasil_province){
+                    $("select[name=nama_province").html(hasil_province);
+                    // console.log(hasil);     
+                }
+            });
+
+            $("select[name=nama_province]").on("change", function(){
+                var id_province_terpilih = $("option:selected",this).attr("id_province");
+                // alert(id_province_terpilih);
+                $.ajax({
+                    type:'post',
+                    url:'config/dataDistrict.php',
+                    data:'id_province='+id_province_terpilih,
+                    success:function(hasil_districs){
+                        // console.log(hasil_districs);
+                        $("select[name=nama_districs]").html(hasil_districs);
+                    }
+                })
+            });
+        });
+    </script>
 </body>
 </html>

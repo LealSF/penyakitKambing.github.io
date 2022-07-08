@@ -21,30 +21,11 @@
             if(!empty($kode_penyakit) && !empty($nama_penyakit) && !empty($penjelasan) && !empty($penanganan)){
                 $input = mysqli_query($conn, "INSERT INTO penyakit_tbl (id_penyakit,penyakit_nama,penyakit_penjelasan,penaykit_penanganan) 
                 VALUES ('$kode_penyakit','$nama_penyakit','$penjelasan','$penanganan')");
-                echo "
-                <script type='text/javascript'>
-                    swal({
-                        title: 'Created',
-                        text: 'Data Berhasil Ditambahkan',
-                        icon: 'success',
-                        button: 'Ok',
-                    });
-                    window.alert('Data tersimpan');
-                </script>";
+                echo "<script>window.alert('Data Berhasil Disimpan')</script>";
                 header('location:../dataPenyakit.php');
             }
             //jika ada yang belum terisi
             else{
-                echo "
-                <script type='text/javascript'>
-                swal({
-                    title: 'Field',
-                    text: 'Data Tidak Berhasil Ditambahkan',
-                    icon: 'error',
-                    button: 'Ok',
-                });
-                window.alert('Data tidak tersimpan');
-                </script>";
                 echo "<script>console.log('Gagal Menyimpan data')</script>";
                 header('location:../dataPenyakit.php');
             }

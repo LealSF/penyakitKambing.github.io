@@ -16,32 +16,12 @@
         if(!empty($kode_aturan) && !empty($nama_penyakit) && !empty($gejala) && !empty($nilai_mb) && !empty($nilai_md)){
             $insert = "INSERT INTO aturan_tbl VALUES ('$kode_aturan','$nama_penyakit','$gejala','$nilai_mb','$nilai_md')";
             $query = mysqli_query($conn,$insert);
-            echo "
-            <script type='text/javascript'>
-                // swal({
-                //     title: 'Created',
-                //     text: 'Data Berhasil Ditambahkan',
-                //     icon: 'success',
-                //     button: 'Ok',
-                // });
-                window.alert('Data tersimpan');
-            </script>
-            ";
+            echo "<script>window.alert('Data Berhasil Ditambah')</script>";
             header('location:../dataAturan.php');
         }
         // Jika tidak
         else{
-            echo "
-            <script type='text/javascript'>
-            // swal({
-            //     title: 'Field',
-            //     text: 'Data Tidak Berhasil Ditambahkan',
-            //     icon: 'error',
-            //     button: 'Ok',
-            // });
-            window.alert('Data tidak tersimpan');
-            </script>
-            ";
+            echo "<script>window.alert('Data Tidak Berhasil Ditambah')</script>";
             header('location:../dataAturan.php');
         }
     }
@@ -56,28 +36,11 @@
             $update = mysqli_query($conn,"UPDATE aturan_tbl SET id_penyakit='$nama_penyakit',id_gejala='$gejala',mb_aturan='$nilai_mb',md_aturan='$nilai_md' WHERE id_aturan='$kode_aturan'");
             // Jika berhasil diupdate
             if($update){
-                echo "
-                <script type='text/javascript'>
-                swal({
-                    title: 'Updated',
-                    text: 'Data Berhasil Diupdate',
-                    icon: 'success',
-                    button: 'Ok',
-                });
-                </script>
-                ";
+                echo "<script>window.alert('Data Berhasil Diupdate')</script>";
                 header('location:../dataAturan.php');
             }
             else{
-                echo "
-                <script type='text/javascript'>
-                swal({
-                    title: 'Field',
-                    text: 'Data Tidak Berhasil Diupdate',
-                    icon: 'error',
-                    button: 'Ok',
-                });
-                </script>";
+                echo "<script>window.alert('Data Tidak Berhasil Diupdate')</script>";
                 header('location:../dataAturan.php');
             }
         }

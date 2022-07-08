@@ -11,27 +11,11 @@
         $nama_gejala = $_POST['nama_gejala'];
         if(!empty($kode_gajala) && !empty($nama_gejala)){
             $query = mysqli_query($conn, "INSERT INTO gejala_tbl (`id_gejala`,`gejala_nama`) VALUES ('$kode_gajala','$nama_gejala')");
-            echo "
-            <script type='text/javascript'>
-                swal({
-                    title: 'Created',
-                    text: 'Data Berhasil Ditambahkan',
-                    icon: 'success',
-                    button: 'Ok',
-                });
-            </script>";
+            echo "<script>window.alert('Data Berhasil Ditambah')</script>";
             header('location:../dataGejala.php');
         }
         else{
-            echo "
-            <script type='text/javascript'>
-            swal({
-                title: 'Field',
-                text: 'Data Tidak Berhasil Ditambahkan',
-                icon: 'error',
-                button: 'Ok',
-            });
-            </script>";
+            echo "<script>window.alert('Data Tidak Berhasil Ditambah')</script>";
             header('location:../dataGejala.php');
         }
     }

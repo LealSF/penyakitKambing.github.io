@@ -101,7 +101,9 @@
       </div>
       <!-- Footer -->
       <div class="row bg-primary flex-column">
-        <p class="text-center">halooooo</p>
+        <div class="py-3 text-center">
+          <p>&copy; Labay EL Sulthan Fatta</p>
+          </div>
       </div>
 
       <script src="../asset/sweetalert.min.js"></script>

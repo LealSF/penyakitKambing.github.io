@@ -50,7 +50,9 @@
     </div>
     <!-- Footer -->
     <div class="row bg-primary flex-column">
-        <p>halooooo</p>
+        <div class="py-3 text-center">
+          <p>&copy; Labay EL Sulthan Fatta</p>
+          </div>
       </div>
     <!-- Fungsi -->
     <!-- menampilkan data -->
@@ -95,11 +97,11 @@
             <form method="POST" class="row g-3" action="gejala/aksi_gejala.php">
                 <div class="col-12">
                   <label for="inputAddress" class="form-label">Kode Gejala</label>
-                  <input type="text" name="kode_gejala" class="form-control" id="inputAddress" placeholder="Masukan kode seperti ini = G001">
+                  <input type="text" name="kode_gejala" class="form-control" id="inputAddress" placeholder="Masukan kode seperti ini = G001" required>
                 </div>
                 <div class="col-12">
                   <label for="inputAddress2" class="form-label">Keterangan Gejala</label>
-                  <input type="text" name="nama_gejala" class="form-control" id="inputAddress2" placeholder="Masukan data gejala">
+                  <input type="text" name="nama_gejala" class="form-control" id="inputAddress2" placeholder="Masukan data gejala" required>
                 </div>
                 <div class="col align-self-end">
                   <button class="btn btn-danger" onclick="goBack()">Cancel</button>
@@ -118,11 +120,11 @@
             <form method="POST" class="row g-3" action="gejala/aksi_gejala.php">
                 <div class="col-12">
                   <label for="inputAddress" class="form-label">Kode Gejala</label>
-                  <input type="text" name="kode_gejala" class="form-control" id="inputAddress" value="<?=$data['id_gejala']?>">
+                  <input type="text" name="kode_gejala" class="form-control" id="inputAddress" value="<?=$data['id_gejala']?>" required>
                 </div>
                 <div class="col-12">
                   <label for="inputAddress2" class="form-label">Keterangan Gejala</label>
-                  <input type="text" name="nama_gejala" class="form-control" id="inputAddress2" value="<?= $data['gejala_nama'] ?>">
+                  <input type="text" name="nama_gejala" class="form-control" id="inputAddress2" value="<?= $data['gejala_nama'] ?>" required>
                 </div>
                 <div class="col align-self-end">
                   <button class="btn btn-danger" onclick="goBack()">Cancel</button>
